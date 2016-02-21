@@ -46,7 +46,7 @@ public class APIAccessFilter implements Filter {
             _allowedMethods = new HashSet<>(Arrays.asList(_allowedMethodsConfig.split(",")));
             _logger.info("ALLOWED-METHODS: {}", _allowedMethods);
         } else {
-            _logger.info("ALLOWED-METHODS: {}", HttpMethod.values());
+            _logger.info("ALLOWED-METHODS: {}", Arrays.toString(HttpMethod.values()));
         }
     }
     
@@ -56,7 +56,7 @@ public class APIAccessFilter implements Filter {
         final String requestURI = ((HttpServletRequest) request).getRequestURI();
         final String requestMETHOD = ((HttpServletRequest) request).getMethod();
         
-        _logger.debug("doFilter {}: {}",requestMETHOD, requestURI);
+        _logger.debug("doFilter {}: {}", requestMETHOD, requestURI);
         
         if (requestURI.endsWith("/home") && "GET".equals(requestMETHOD)) {
             chain.doFilter(request, response);
@@ -78,7 +78,13 @@ public class APIAccessFilter implements Filter {
     }
     
     private boolean _hasValidApiKey(ServletRequest request) {
-        String apiKey = ((HttpServletRequest) request).getHeader("API-KEY");
-        return apiKey != null && apiKey.length() > 0 && _accessService.isValidKey(apiKey);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        final String apiKey = httpRequest.getHeader("API-KEY");
+        
+        if (apiKey != null && !apiKey.isEmpty()) {
+            return _accessService.isValidKey(apiKey);
+        }
+        
+        return false;
     }
 }
