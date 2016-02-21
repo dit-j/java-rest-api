@@ -9,16 +9,26 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableCaching
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "de.jawb.restapi.template.model")
+@EnableAsync
 public class DBConfiguration {
     
     @Bean
@@ -44,19 +54,21 @@ public class DBConfiguration {
     }
     
     @Bean
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(DataSource dataSource) throws Exception {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("de.jawb.restapi.template.model.db"); 
+        em.setPackagesToScan("de.jawb.restapi.template.model");
         em.setPersistenceProvider(new HibernatePersistenceProvider());
         
         Map<String, String> p = new HashMap<String, String>();
-        p.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "create");
+        p.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
         //p.put(org.hibernate.cfg.Environment.HBM2DDL_IMPORT_FILES, "import_psql.sql");
         p.put(org.hibernate.cfg.Environment.DIALECT, CustomMysqlDialect.class.getName());
         p.put(org.hibernate.cfg.Environment.SHOW_SQL, "true");
+        
         em.setJpaPropertyMap(p);
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         
         return em;
     }
@@ -66,13 +78,15 @@ public class DBConfiguration {
         return new JpaTransactionManager(entityManagerFactory);
     }
     
-//    @Bean
-//    public CacheManager cacheManager() throws Exception {
-//        SimpleCacheManager scm = new SimpleCacheManager();
-//         
-//        scm.setCaches(Arrays.asList(new ???Cache()));
-//        
-//        return scm;
-//    }
-
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
+    
+    @Bean
+    public CacheManager cacheManager() throws Exception {
+        ConcurrentMapCacheManager scm = new ConcurrentMapCacheManager("access");
+        return scm;
+    }
+    
 }
