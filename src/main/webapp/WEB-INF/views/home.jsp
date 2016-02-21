@@ -18,14 +18,31 @@
 
 </head>
 <body>
-	<div align="center" >
-		<div>
-			<div class="titleDiv">
-				<span>Title</span><br>
-				<span>Beschreibung der Seite</span>
-			</div>
-			<div></div>
-		</div>
-	</div>
+<table>
+  <thead>
+  <tr>
+    <th>path</th>
+    <th>methods</th>
+    <th>consumes</th>
+    <th>produces</th>
+    <th>params</th>
+    <th>headers</th>
+    <th>custom</th>
+  </tr>
+  </thead>
+  <tbody>
+  <c:forEach items="${handlerMethods}" var="endPoint">
+    <tr>
+      <td>${endPoint.patternsCondition}</td>
+      <td>${endPoint.methodsCondition}</td>
+      <td>${endPoint.consumesCondition}</td>
+      <td>${endPoint.producesCondition}</td>
+      <td>${endPoint.paramsCondition}</td>
+      <td>${endPoint.headersCondition}</td>
+      <td>${empty endPoint.customCondition ? "none" : endPoint.customCondition}</td>
+    </tr>
+  </c:forEach>
+  </tbody>
+</table>
 </body>
 </html>

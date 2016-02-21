@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,6 @@ import de.jawb.restapi.template.controller.filters.RequestStatistics;
 import de.jawb.restapi.template.service.user.IUserService;
 
 @RestController
-@RequestMapping(value = Mapping.V1.root)
 public class ExampleRestV1Controller {
     
     final static String       V = "1.2.3";
@@ -36,7 +36,7 @@ public class ExampleRestV1Controller {
         _startTime = LocalDateTime.now();
     }
     
-    @RequestMapping(value = Mapping.V1.status)
+    @RequestMapping(value = Mapping.V1.status, method = RequestMethod.GET)
     public Object status() {
         
         Map<String, Object> map = new HashMap<>();
@@ -47,7 +47,7 @@ public class ExampleRestV1Controller {
         return APIResponse.status(map);
     }
     
-    @RequestMapping(value = Mapping.V1.user)
+    @RequestMapping(value = Mapping.V1.user, method = RequestMethod.GET)
     public Object findUser(@RequestParam Long id) {
         return _uService.findUserWithId(id);
     }

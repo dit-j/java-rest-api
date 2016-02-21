@@ -53,11 +53,17 @@ public class APIAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         
-        _logger.debug("doFilter {}", request);
+        final String requestURI = ((HttpServletRequest) request).getRequestURI();
+        final String requestMETHOD = ((HttpServletRequest) request).getMethod();
         
-        if (_hasValidApiKey(request) && _hasValidRequestMethod(request)) {
+        _logger.debug("doFilter {}: {}",requestMETHOD, requestURI);
+        
+        if (requestURI.endsWith("/home") && "GET".equals(requestMETHOD)) {
+            chain.doFilter(request, response);
+        } else if (_hasValidApiKey(request) && _hasValidRequestMethod(requestMETHOD)) {
             chain.doFilter(request, response);
         } else {
+            _logger.warn("\t send 403");
             ((HttpServletResponse) response).sendError(HttpStatus.FORBIDDEN.value());
         }
     }
@@ -66,9 +72,8 @@ public class APIAccessFilter implements Filter {
     public void destroy() {
     }
     
-    private boolean _hasValidRequestMethod(ServletRequest request) {
+    private boolean _hasValidRequestMethod(String method) {
         if (_allowedMethods == null) return true;
-        String method = ((HttpServletRequest) request).getMethod();
         return _allowedMethods.contains(method);
     }
     
