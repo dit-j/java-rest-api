@@ -13,9 +13,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-@ComponentScan("de.jawb.restapi.template.*")
 @PropertySource("classpath:config.properties")
-@Import({ DBConfiguration.class })
+@Import({ DBConfiguration.class, WebConfiguration.class })
+@ComponentScan("de.jawb.restapi.template.*")
 public class MainConfiguration {
 
 //    private static final Logger _logger = LoggerFactory.getLogger(MainConfiguration.class);
@@ -30,7 +30,7 @@ public class MainConfiguration {
     public String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }
-
+    
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
