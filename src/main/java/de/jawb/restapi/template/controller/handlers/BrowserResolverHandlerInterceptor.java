@@ -28,7 +28,7 @@ public class BrowserResolverHandlerInterceptor extends HandlerInterceptorAdapter
         UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         Version browserVersion = ua.getBrowserVersion();
         String browserName = ua.getBrowser().toString();
-
+        
         try {
             int majVersion = Integer.parseInt(browserVersion.getMajorVersion());
             BrowserInfo browser = new BrowserInfo(browserName, majVersion);
@@ -45,7 +45,7 @@ public class BrowserResolverHandlerInterceptor extends HandlerInterceptorAdapter
     }
     
     /**
-     * @author dikr
+     * @author dit
      */
     public static class BrowserInfo {
         

@@ -8,18 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.jawb.restapi.template.config.profiles.V1;
 import de.jawb.restapi.template.controller.api.response.APIResponse;
 import de.jawb.restapi.template.controller.handlers.GlobalExceptionHandler;
+import de.jawb.restapi.template.model.access.ApiAccess;
 import de.jawb.restapi.template.service.IService;
 
 @V1
 @RestController
 @RequestMapping(value = "/v1")
 public class APIControllerV1 {
-
+    
     private static final Logger _logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
                                         
     @Qualifier("now")
@@ -29,22 +31,16 @@ public class APIControllerV1 {
     @Autowired
     private IService            _service;
                                 
-    @RequestMapping(value = "/status")
-    public Object status() {
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    public Object status(ApiAccess access) {
         
         _logger.debug("status {}", _startTime);
         
         Map<String, Object> map = new HashMap<>();
         map.put("status", "online since: " + _startTime);
         map.put("version", "v1");
-        map.put("request", "32/sec");
+        map.put("request", access.getRequests());
         map.put("service", _service.toString());
-        
-        
-        if(_service != null){
-            throw new RuntimeException();
-        }
-        
         
         return APIResponse.status(map);
     }
