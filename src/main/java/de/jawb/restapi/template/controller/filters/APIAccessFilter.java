@@ -22,7 +22,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import de.jawb.restapi.template.model.db.access.IAccessService;
+import de.jawb.restapi.template.service.access.IAccessService;
 
 /**
  * @author dit

@@ -54,6 +54,13 @@ public abstract class BaseJPADAO<T> {
         return t;
     }
     
+    public boolean isExists(Serializable id){
+        Query query = _em.createQuery("select 1 from :table t where t.id = :id");
+        query.setParameter("table", _entityClass.getSimpleName());
+        query.setParameter("id", id);
+        return !query.getResultList().isEmpty();
+    }
+    
     /**
      * Speichert ein Objekt in der DB
      * 

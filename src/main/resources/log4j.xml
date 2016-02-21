@@ -11,11 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-<<<<<<< HEAD
 	<logger name="de.jawb.restapi">
-=======
-	<logger name="de.jawb.restapi.template">
->>>>>>> branch 'master' of https://github.com/dit-j/restapi.git
 		<level value="DEBUG" />
 	</logger>
 

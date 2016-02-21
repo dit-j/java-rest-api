@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.jawb.restapi.template.controller.api.Mapping;
 import de.jawb.restapi.template.controller.api.response.APIResponse;
 import de.jawb.restapi.template.controller.filters.RequestStatistics;
-import de.jawb.restapi.template.model.db.user.IUserService;
+import de.jawb.restapi.template.service.user.IUserService;
 
 @RestController
 @RequestMapping(value = Mapping.V1.root)

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jawb.restapi.template.model.db.access;
+package de.jawb.restapi.template.service.access;
 
 import java.util.UUID;
 
@@ -9,6 +9,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import de.jawb.restapi.template.model.access.ApiAccess;
+import de.jawb.restapi.template.model.access.ApiAccessDao;
 
 /**
  * @author dit

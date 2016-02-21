@@ -6,9 +6,10 @@ public interface Mapping {
     
     public interface V1 {
         
-        String root     = REST + "/v1";
+        String root   = REST + "/v1";
                       
         String status = root + "/status";
         String user   = root + "/user";
+                      
     }
 }

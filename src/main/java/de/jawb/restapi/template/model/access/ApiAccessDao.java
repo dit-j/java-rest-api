@@ -1,8 +1,8 @@
-package de.jawb.restapi.template.model.db.access;
+package de.jawb.restapi.template.model.access;
 
 import org.springframework.stereotype.Repository;
 
-import de.jawb.restapi.template.model.db.BaseJPADAO;
+import de.jawb.restapi.template.model.BaseJPADAO;
 
 /**
  * @author dit

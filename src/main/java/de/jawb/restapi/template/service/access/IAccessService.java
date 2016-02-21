@@ -1,4 +1,4 @@
-package de.jawb.restapi.template.model.db.access;
+package de.jawb.restapi.template.service.access;
 
 public interface IAccessService {
     

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import de.jawb.restapi.template.model.user.IUserService;
+import de.jawb.restapi.template.service.user.IUserService;
 
 @Controller
 public class ExamplePageController {

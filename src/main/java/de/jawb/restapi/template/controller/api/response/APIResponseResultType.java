@@ -5,7 +5,7 @@ package de.jawb.restapi.template.controller.api.response;
 
 import java.util.Map;
 
-import de.jawb.restapi.template.model.db.user.User;
+import de.jawb.restapi.template.model.user.User;
 
 /**
  * @author Dieter Kraus (08.10.2015)

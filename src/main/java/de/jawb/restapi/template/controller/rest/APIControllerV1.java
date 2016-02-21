@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.jawb.restapi.template.config.profiles.V1;
-import de.jawb.restapi.template.controller.api.APIResponse;
+import de.jawb.restapi.template.controller.api.response.APIResponse;
 import de.jawb.restapi.template.controller.handlers.GlobalExceptionHandler;
 import de.jawb.restapi.template.service.IService;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jawb.restapi.template.model.db.user;
+package de.jawb.restapi.template.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.jawb.restapi.template.controller.api.response.APIResponse;
+import de.jawb.restapi.template.model.user.User;
+import de.jawb.restapi.template.model.user.UserDao;
 
 /**
  * @author dit (14.12.2015)

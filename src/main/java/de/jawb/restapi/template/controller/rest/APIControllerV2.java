@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.jawb.restapi.template.config.profiles.V2;
-import de.jawb.restapi.template.controller.api.APIResponse;
+import de.jawb.restapi.template.controller.api.response.APIResponse;
 import de.jawb.restapi.template.service.IService;
 
 @V2

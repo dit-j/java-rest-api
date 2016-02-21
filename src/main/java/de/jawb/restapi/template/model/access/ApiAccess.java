@@ -1,4 +1,4 @@
-package de.jawb.restapi.template.model.db.access;
+package de.jawb.restapi.template.model.access;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
