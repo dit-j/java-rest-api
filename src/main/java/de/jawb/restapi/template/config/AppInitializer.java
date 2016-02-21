@@ -7,10 +7,8 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -24,7 +22,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { WebConfiguration.class };
+        return new Class[] {};
     }
     
     @Override
@@ -33,34 +31,14 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     }
     
     @Override
-    protected String getServletName() {
-        return "restAPI-dispatcherServlet";
-    }
-    
-//    
-    @Override
     protected void customizeRegistration(Dynamic registration) {
         boolean set = registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
-        
         _logger.debug("throwExceptionIfNoHandlerFound set: {}", set);
     }
     
     @Override
-    protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        DispatcherServlet ds = super.createDispatcherServlet(servletAppContext);
-        
-        _logger.debug("createDispatcherServlet: {}", ds.getServletName());
-        
-        return ds;
-    }
-    
-    @Override
     protected Filter[] getServletFilters() {
-        return new Filter[] { 
-                createEncodigFilter(), 
-                new DelegatingFilterProxy("apiAccessFilter"), 
-                new DelegatingFilterProxy("apiRequestStatisticsFilter") 
-        };
+        return new Filter[] { createEncodigFilter(), new DelegatingFilterProxy("apiAccessFilter"), new DelegatingFilterProxy("apiRequestStatisticsFilter") };
     }
     
     @Override
@@ -68,16 +46,6 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
         super.onStartup(servletContext);
         
     }
-    
-//    @Override
-//    public void onStartup(ServletContext servletContext) throws ServletException {
-//        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-//        ctx.register(getRootConfigClasses());
-//        ctx.setServletContext(servletContext);
-//        Dynamic dynamic = servletContext.addServlet("dispatcher", new DispatcherServlet(ctx));
-//        dynamic.addMapping("/");
-//        dynamic.setLoadOnStartup(1);
-//    }
     
     private CharacterEncodingFilter createEncodigFilter() {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
