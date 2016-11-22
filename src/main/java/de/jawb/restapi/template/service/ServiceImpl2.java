@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jawb.restapi.template.service;
 
@@ -15,10 +15,10 @@ import de.jawb.restapi.template.config.profiles.V2;
 @V2
 @Service
 public class ServiceImpl2 implements IService {
-    
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-    
+
 }

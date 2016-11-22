@@ -16,9 +16,9 @@ import de.jawb.restapi.template.base.exceptions.BaseAppException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    
+
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BaseAppException.class)
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         logger.error("handleException: {}", ex.getMessage());
         return ex.createJsonResponse();
     }
-    
+
     @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         logger.error("handleException: {}", ex.getMessage());
         return new BaseAppException(ex).createJsonResponse();
     }
-    
+
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -42,5 +42,5 @@ public class GlobalExceptionHandler {
         logger.error("handleException: {}", ex.getMessage());
         return new BaseAppException("'" + request.getRequestURI() + "' not found").createJsonResponse();
     }
-    
+
 }
