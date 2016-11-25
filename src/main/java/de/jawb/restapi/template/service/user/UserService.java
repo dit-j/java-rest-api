@@ -26,12 +26,11 @@ public class UserService implements IUserService {
     private PasswordEncoder _encoder;
 
     @Override
-    public void onStart(AppStartedEvent event) {
-    }
+    public void onStart(AppStartedEvent event) {}
 
     @Transactional
     @Override
-    public User saveNewUser(String name, String secondName) {
+    public APIResponse saveNewUser(String name, String secondName) {
 
         User u = new User();
         u.setFirstName(name);
@@ -41,12 +40,12 @@ public class UserService implements IUserService {
 
         _udao.create(u);
 
-        return u;
+        return APIResponse.user(u);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Object findUserWithId(Long id) {
+    public APIResponse findUserWithId(Long id) {
         return APIResponse.user(_udao.getByID(id));
     }
 

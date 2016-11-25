@@ -11,27 +11,27 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import de.jawb.restapi.template.controller.handlers.ApiAccessHandlerInterceptor;
-import de.jawb.restapi.template.controller.handlers.ApiAccessResolver;
+import de.jawb.restapi.template.controller.handlers.argsresolvers.ApiAccessArgumentResolver;
+import de.jawb.restapi.template.controller.handlers.argsresolvers.BrowserInfoArgumentResolver;
+import de.jawb.restapi.template.controller.handlers.interceptors.ApiAccessHandlerInterceptor;
+import de.jawb.restapi.template.controller.handlers.interceptors.BrowserResolverHandlerInterceptor;
 
 @Configuration
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
-//    @Autowired
-//    private RequestStatisticsInterceptor requestStatisticsInterceptor;
-    
     @Autowired
-    private ApiAccessHandlerInterceptor accessCounterHandlerInterceptor;
-                                        
+    private ApiAccessHandlerInterceptor       accessCounterHandlerInterceptor;
+
     @Autowired
-    private ApiAccessResolver           accessResolver;
-                                        
+    private BrowserResolverHandlerInterceptor browserResolverHandlerInterceptor;
+
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
@@ -40,7 +40,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         internalResourceViewResolver.setSuffix(".jsp");
         return internalResourceViewResolver;
     }
-    
+
     @Bean
     public MessageSource messageSource() {
         String[] baseNames = "messages".split(","); // messages.properties
@@ -48,26 +48,33 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         resourceBundleMessageSource.setBasenames(baseNames);
         return resourceBundleMessageSource;
     }
-    
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseSuffixPatternMatch(false);
+        configurer.setUseTrailingSlashMatch(false);
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/img/**").addResourceLocations("/web/assets/img/");
         registry.addResourceHandler("/js/**").addResourceLocations("/web/assets/js/");
         registry.addResourceHandler("/css/**").addResourceLocations("/web/assets/css/");
     }
-    
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(requestStatisticsInterceptor);
-        registry.addInterceptor(accessCounterHandlerInterceptor);
+        registry.addInterceptor(accessCounterHandlerInterceptor).addPathPatterns("/v1/*");
+        registry.addInterceptor(browserResolverHandlerInterceptor); // .addPathPatterns("/v1/*");
     }
-    
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(accessResolver);
+        argumentResolvers.add(new ApiAccessArgumentResolver());
+        argumentResolvers.add(new BrowserInfoArgumentResolver());
         super.addArgumentResolvers(argumentResolvers);
     }
-    
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

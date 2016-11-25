@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BaseAppException.class)
     public Object handleException(HttpServletRequest request, HttpServletResponse response, BaseAppException ex) {
-        logger.error("handleException: {}", ex.getMessage());
+        logger.error("handle BaseAppException: {}", ex.getMessage());
         return ex.createJsonResponse();
     }
 
@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public Object handleException(HttpServletRequest request, Exception ex) {
-        logger.error("handleException: {}", ex.getMessage());
+        ex.printStackTrace();
+        logger.error("handle Exception: {}", ex.getMessage());
         return new BaseAppException(ex).createJsonResponse();
     }
 
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object handleException(HttpServletRequest request, NoHandlerFoundException ex) {
-        logger.error("handleException: {}", ex.getMessage());
+        logger.error("handle NoHandlerFoundException: {}", ex.getMessage());
         return new BaseAppException("'" + request.getRequestURI() + "' not found").createJsonResponse();
     }
 

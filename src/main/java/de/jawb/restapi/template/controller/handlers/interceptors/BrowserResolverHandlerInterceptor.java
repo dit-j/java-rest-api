@@ -1,85 +1,70 @@
-package de.jawb.restapi.template.controller.handlers;
+package de.jawb.restapi.template.controller.handlers.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import eu.bitwalker.useragentutils.UserAgent;
 import eu.bitwalker.useragentutils.Version;
 
+/**
+ * Dieser Interceptor ermittelt den {@link BrowserInfo} eines Clients und setzt diesen als Request-Attribute
+ *
+ * @author dit
+ */
+@Component
 public class BrowserResolverHandlerInterceptor extends HandlerInterceptorAdapter {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(BrowserResolverHandlerInterceptor.class);
-    
-    public BrowserResolverHandlerInterceptor() {
-    }
-    
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        
-        String userAgent = request.getHeader("user-agent");
-        
-        logger.debug("user-agent: {}", userAgent);
-        
+        String userAgent = request.getHeader("User-Agent");
+        logger.debug("User-Agent: {}", userAgent);
+
         UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         Version browserVersion = ua.getBrowserVersion();
         String browserName = ua.getBrowser().toString();
-        
+
         try {
             int majVersion = Integer.parseInt(browserVersion.getMajorVersion());
-            BrowserInfo browser = new BrowserInfo(browserName, majVersion);
-            request.setAttribute("browserInfo", browser);
+            request.setAttribute("browserInfo", new BrowserInfo(browserName, majVersion));
         } catch (Exception e) {
-            //
+            request.setAttribute("browserInfo", new BrowserInfo(browserName, -1));
         }
-        
+
         return true;
     }
-    
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-    }
-    
+
     /**
      * @author dit
      */
     public static class BrowserInfo {
-        
-        private String name;
-        private int    version;
-                       
-        public BrowserInfo() {
-        }
-        
+
+        private final String name;
+        private final int    version;
+
         public BrowserInfo(String name, int version) {
             this.name = name;
             this.version = version;
         }
-        
+
         public String getName() {
             return name;
         }
-        
-        public void setName(String name) {
-            this.name = name;
-        }
-        
+
         public int getVersion() {
             return version;
         }
-        
-        public void setVersion(int version) {
-            this.version = version;
-        }
-        
+
         @Override
         public String toString() {
             return "BrowserInfo [name=" + name + ", version=" + version + "]";
         }
-        
+
     }
 }

@@ -1,4 +1,4 @@
-package de.jawb.restapi.template.controller.handlers;
+package de.jawb.restapi.template.controller.handlers.argsresolvers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import de.jawb.restapi.template.model.access.ApiAccess;
 
 @Component
-public class ApiAccessResolver implements HandlerMethodArgumentResolver {
+public class ApiAccessArgumentResolver implements HandlerMethodArgumentResolver {
     
-    private static final Logger logger = LoggerFactory.getLogger(ApiAccessResolver.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiAccessArgumentResolver.class);
     
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

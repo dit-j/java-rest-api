@@ -18,22 +18,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ComponentScan("de.jawb.restapi.template.*")
 public class MainConfiguration {
 
-//    private static final Logger _logger = LoggerFactory.getLogger(MainConfiguration.class);
-    
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
-    
+
     @Qualifier("now")
     @Bean
     public String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }
-    
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
 }
